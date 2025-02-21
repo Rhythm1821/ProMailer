@@ -46,9 +46,7 @@ export default function App() {
     } else if (node.type === 'addNode') {
       const templateNodePresent = nodes.some((n) => n.type === 'templateNode');
       if (templateNodePresent) {
-        console.log("Template node present");
         setModalInfo({ isOpen: true, nodeId: node.id, nodeType: 'addNode', includeDelay: true });
-        console.log(modalInfo);
 
       } else {
         setModalInfo({ isOpen: true, nodeId: node.id, nodeType: 'addNode', includeDelay: false });
@@ -101,9 +99,6 @@ export default function App() {
 
       return [...updatedEdges, newEdgeToAddNode];
     });
-
-    console.log("new node created", newNode);
-
 
     setModalInfo({ isOpen: false, nodeId: null, nodeType: null, includeDelay: false });
   };
