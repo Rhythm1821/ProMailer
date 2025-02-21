@@ -86,13 +86,35 @@ const handleSubmitNewNode = async (nodeType, setData, setIsAddingNew, setNewItem
     }
 };
 
-const handleInsert = (selectedInstances, nodeId, nodeType, addNewNode, onClose) => {
+const handleInsert = (selectedInstances, nodeId, nodeType, addNewNode, onClose, closeModal) => {
     if (selectedInstances.length === 1) {
         addNewNode(selectedInstances, nodeId, nodeType);
+        if (closeModal) {
+            closeModal(false);
+        }
         onClose();
     } else {
         alert('Please select one for now :)');
     }
 };
 
-export { modalStyles, handleInputChange, handleSelect, handleAdd, handleRemove, handleSubmitNewNode, handleInsert };
+const handleToggleModal = (openModal, setOpenDelayModal, setOpenTemplateModal) => {
+    if(openModal === 'templateModal') {
+      setOpenTemplateModal(true);
+      setOpenDelayModal(false);
+    } else {
+    setOpenDelayModal(true);
+    setOpenTemplateModal(false);
+    }
+  }
+
+export { 
+    modalStyles, 
+    handleInputChange, 
+    handleSelect, 
+    handleAdd, 
+    handleRemove, 
+    handleSubmitNewNode, 
+    handleInsert,
+    handleToggleModal
+};
