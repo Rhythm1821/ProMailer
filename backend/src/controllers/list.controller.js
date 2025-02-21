@@ -27,7 +27,7 @@ export async function addLead(request, response) {
 
         await newLead.save()
 
-        return response.json({ msg: 'lead added!!' })
+        return response.json({ msg: 'lead added!!', newLead })
     } catch (error) {
         return response.status(500).json("Error adding lead: " + error.message);
     }

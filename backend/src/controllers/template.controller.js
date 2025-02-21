@@ -25,7 +25,7 @@ export async function addTemplate(request, response) {
             placeholders
         })
         await newTemplate.save()
-        return response.json({ msg: 'template added!!' })
+        return response.json({ msg: 'template added!!', newTemplate })
     } catch (error) {
         throw new Error("Error adding template: " + error.message);
     }
