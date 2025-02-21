@@ -36,6 +36,7 @@ export default function App() {
 
   useFetchWorkflows(setNodes, setEdges);
 
+
   const onNodeClick = (e, node) => {
     if (node.type === 'leadSource') {
       const leadNodePresent = nodes.some((n) => n.type === 'leadNode');

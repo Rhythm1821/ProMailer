@@ -8,7 +8,7 @@ export default function AddTemplateForm({
   setData,
 }) {
   return (
-    <form>
+    <div>
       <input
         type="text"
         name="name"
@@ -65,6 +65,6 @@ export default function AddTemplateForm({
       >
         Add
       </button>
-    </form>
+    </div>
   )
 }

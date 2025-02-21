@@ -124,14 +124,6 @@ export default function TemplatesDropdown(
                     )}
                     <InsertButton
                         onClick={() => handleInsert(selectedInstances, nodeId, nodeType, addNewNode, onClose, closeModal)}
-                        style={{
-                            backgroundColor: '#3b82f6',
-                            color: 'white',
-                            padding: '8px 16px',
-                            borderRadius: '8px',
-                            cursor: 'pointer',
-                            border: 'none',
-                        }}
                     />
                 </div>
             </div>
