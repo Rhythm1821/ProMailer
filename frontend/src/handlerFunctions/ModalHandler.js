@@ -75,7 +75,7 @@ const handleSubmitNewNode = async (nodeType, setData, setIsAddingNew, setNewItem
         });
         const data = await response.json();
         if (response.ok) {
-            setData(prevData=>([...prevData, data]));
+            setData(prevData=>([...prevData, data.newLead || data.newTemplate]));
             setIsAddingNew(false);
             setNewItemData({});
         } else {
