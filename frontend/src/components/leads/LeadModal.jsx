@@ -1,5 +1,4 @@
-import { handleAdd, handleInsert, handleRemove, handleSelect } from "../../handlerFunctions/ModalHandler";
-import InsertButton from "../buttons/InsertButton";
+import { handleAdd } from "../../handlerFunctions/ModalHandler";
 import AddLeadForm from "./AddLeadForm";
 import LeadsDropdown from "./LeadsDropdown";
 

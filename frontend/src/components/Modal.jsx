@@ -86,8 +86,6 @@ export default function Modal({ isOpen, onClose, nodeId, nodeType, addNewNode, i
               nodeType={nodeType}
               addNewNode={addNewNode}
               includeDelay={includeDelay}
-              handleInputChange={handleInputChange}
-              handleSubmitNewNode={handleSubmitNewNode}
               selectedInstances={selectedInstances}
               setSelectedInstances={setSelectedInstances}
               isAddingNew={isAddingNew}
