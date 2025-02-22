@@ -10,7 +10,6 @@ export default function TemplatesDropdown(
         data,
         setIsAddingNew,
         setNewItemData,
-        nodeId,
         nodeType,
         addNewNode,
         onClose,
@@ -123,7 +122,7 @@ export default function TemplatesDropdown(
                         </div>
                     )}
                     <InsertButton
-                        onClick={() => handleInsert(selectedInstances, nodeId, nodeType, addNewNode, onClose, closeModal)}
+                        onClick={() => handleInsert(selectedInstances, nodeType, addNewNode, onClose, closeModal)}
                     />
                 </div>
             </div>

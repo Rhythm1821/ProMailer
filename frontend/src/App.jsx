@@ -12,7 +12,7 @@ import {
 import '@xyflow/react/dist/style.css';
 import LeadSource from './nodes/LeadSource';
 import { initialNodes } from './utils';
-import AddNode from './components/AddNode';
+import AddNode from './nodes/AddNode';
 import SequenceStartNode from './nodes/SequenceStartNode';
 import Modal from './components/Modal';
 import TemplateNode from './nodes/TemplateNode';
