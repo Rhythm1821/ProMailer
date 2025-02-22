@@ -1,4 +1,8 @@
 const handleSave = (nodes, edges, currentLead, currentTemplate, delay) => {
+    if (nodes.length === 0 || edges.length === 0) {
+        alert('Please add nodes and edges to save the workflow');
+        return
+    }
     const data = {
         lead: currentLead,
         template: currentTemplate,
@@ -14,28 +18,6 @@ const handleSave = (nodes, edges, currentLead, currentTemplate, delay) => {
         },
         body: JSON.stringify(data),
     }).then(res => res.json()).then(data => console.log(data)).catch(error => console.log(error))
-}
-
-
-
-const onNodeClick = (e, node, nodes) => {
-    if (node.type === 'leadSource') {
-        const leadNodePresent = nodes.some((n) => n.type === 'leadNode');
-        if (leadNodePresent) {
-            return
-        }
-        setModalInfo({ isOpen: true, nodeId: node.id, nodeType: 'leadSource', includeDelay: false });
-    } else if (node.type === 'addNode') {
-        const templateNodePresent = nodes.some((n) => n.type === 'templateNode');
-        if (templateNodePresent) {
-            console.log("Template node present");
-            setModalInfo({ isOpen: true, nodeId: node.id, nodeType: 'addNode', includeDelay: true });
-            console.log(modalInfo);
-
-        } else {
-            setModalInfo({ isOpen: true, nodeId: node.id, nodeType: 'addNode', includeDelay: false });
-        }
-    }
 }
 
 const handleNodeRemove = (nodeId, setNodes, setEdges) => {
@@ -65,4 +47,4 @@ const handleNodeRemove = (nodeId, setNodes, setEdges) => {
     });
 };
 
-export { handleSave, onNodeClick,  handleNodeRemove };
+export { handleSave, handleNodeRemove };

@@ -86,9 +86,9 @@ const handleSubmitNewNode = async (nodeType, setData, setIsAddingNew, setNewItem
     }
 };
 
-const handleInsert = (selectedInstances, nodeId, nodeType, addNewNode, onClose, closeModal) => {
-    if (selectedInstances.length === 1) {
-        addNewNode(selectedInstances, nodeId, nodeType);
+const handleInsert = (selectedInstances, nodeType, addNewNode, onClose, closeModal) => {
+    if (selectedInstances.length === 1 || nodeType === 'delay') {
+        addNewNode(selectedInstances, nodeType);
         if (closeModal) {
             closeModal(false);
         }
