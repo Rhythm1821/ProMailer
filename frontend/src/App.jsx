@@ -10,15 +10,16 @@ import {
 } from '@xyflow/react';
 
 import '@xyflow/react/dist/style.css';
-import LeadSource from './nodes/leadSource';
+import LeadSource from './nodes/LeadSource';
 import { initialNodes } from './utils';
 import AddNode from './components/AddNode';
-import SequenceStartNode from './components/SequenceStartNode';
+import SequenceStartNode from './nodes/SequenceStartNode';
 import Modal from './components/Modal';
-import TemplateNode from './components/TemplateNode';
-import LeadNode from './components/LeadNode';
+import TemplateNode from './nodes/TemplateNode';
+import LeadNode from './nodes/LeadNode';
 import { handleNodeRemove, handleSave } from './handlerFunctions/AppHandler';
 import useFetchWorkflows from './hooks/useFetchWorkflows';
+import DelayNode from './nodes/DelayNode';
 
 
 export default function App() {
@@ -55,15 +56,14 @@ export default function App() {
     }
   }
 
-  const addNewNode = (selectedData, sourceNodeId, nodeType) => {
-
+  const addNewNode = (selectedData, nodeType) => {
     const newNodeId = `node-${nodes.length + 1}`;
 
     const newNode = {
       id: newNodeId,
       position: { x: 540, y: nodes.length * 100 },
-      data: { label: selectedData[0].name },
-      type: nodeType === 'leadSource' ? 'leadNode' : 'templateNode',
+      data: { label: nodeType !== 'delay' ? selectedData[0].name : selectedData },
+      type: nodeType === 'leadSource' ? 'leadNode' : nodeType === 'delay' ? 'delayNode' : 'templateNode',
     };
 
     const currentAddNode = nodes.find((node) => node.id === 'addNode');
@@ -82,6 +82,8 @@ export default function App() {
       setCurrentLead(selectedData[0])
     } else if (nodeType === 'addNode') {
       setCurrentTemplate(selectedData[0])
+    } else if (nodeType === 'delay') {
+      setDelay(selectedData[0])
     }
 
     setNodes((prevNodes) => {
@@ -115,14 +117,14 @@ export default function App() {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         onNodeClick={onNodeClick}
-        nodeTypes={{ addNode: AddNode, leadSource: LeadSource, sequenceStartNode: SequenceStartNode, leadNode: LeadNode, templateNode: TemplateNode }}
+        nodeTypes={{ addNode: AddNode, leadSource: LeadSource, sequenceStartNode: SequenceStartNode, leadNode: LeadNode, templateNode: TemplateNode, delayNode: DelayNode }}
       >
         <Controls />
         <MiniMap />
         <Background variant="dots" gap={12} size={1} />
       </ReactFlow>
 
-      {/* Render dynamic buttons for each node */}
+      {/* Render dynamic buttons for each node edit and delete */}
       {
         nodes.map((node) => (
           node.type !== 'addNode' && node.type !== 'leadSource' && (

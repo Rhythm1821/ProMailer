@@ -98,7 +98,7 @@ export default function LeadsDropdown({
                 </div>
             )}
             <InsertButton
-                onClick={() => handleInsert(selectedInstances, nodeId, nodeType, addNewNode, onClose)}
+                onClick={() => handleInsert(selectedInstances, nodeType, addNewNode, onClose)}
             />
 
         </div>
