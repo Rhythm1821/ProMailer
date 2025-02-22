@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { handleAdd, handleInputChange, handleInsert, handleRemove, handleSubmitNewNode, modalStyles, handleSelect, handleToggleModal } from "../handlerFunctions/ModalHandler.js";
 import useFetchModalData from "../hooks/useFetchModalData.jsx";
 import useModalState from "../hooks/useModalState.jsx";
@@ -7,7 +7,7 @@ import DelayModal from "./DelayModal.jsx";
 import CloseButton from "./buttons/CloseButton.jsx";
 import LeadModal from "./leads/LeadModal.jsx";
 
-export default function Modal({ isOpen, onClose, nodeId, nodeType, addNewNode, includeDelay }){
+export default function Modal({ isOpen, onClose, nodeId, nodeType, addNewNode, includeDelay }) {
   const [data, setData] = useState([]);
   const [selectedInstances, setSelectedInstances] = useState({});
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -20,14 +20,14 @@ export default function Modal({ isOpen, onClose, nodeId, nodeType, addNewNode, i
   useFetchModalData(isOpen, nodeId, nodeType, setData);
   useModalState(isOpen, setIsAddingNew, setSelectedInstances, setNewItemData);
 
-  const onClick = () => {
+  const onClick = useCallback(() => {
     setIsAddingNew(false);
     setSelectedInstances([]);
     setNewItemData({});
     setOpenDelayModal(false);
     setOpenTemplateModal(false);
     onClose();
-  }
+  }, [onClose])
 
 
   if (!isOpen) return null;
@@ -38,8 +38,7 @@ export default function Modal({ isOpen, onClose, nodeId, nodeType, addNewNode, i
         <CloseButton onClick={onClick} style={modalStyles.closeButton} />
 
         {
-          nodeType !== 'leadSource' ?
-            (
+          nodeType !== 'leadSource' ? (
               <>
                 <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px', color: '#333' }}>
                   <button onClick={() => handleToggleModal('templateModal', setOpenDelayModal, setOpenTemplateModal)}>Template</button>
@@ -103,10 +102,10 @@ export default function Modal({ isOpen, onClose, nodeId, nodeType, addNewNode, i
             <DelayModal
               isOpen={openDelayModal}
               onClose={() => setOpenDelayModal(false)}
-              onSubmit={() => setOpenDelayModal(false)}
               nodeId={nodeId}
               nodeType={nodeType}
               addNewNode={addNewNode}
+              closeModal={setOpenDelayModal}
             />
           ) : null
         }
