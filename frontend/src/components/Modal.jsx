@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { handleAdd, handleInputChange, handleInsert, handleRemove, handleSubmitNewNode, modalStyles, handleSelect, handleToggleModal } from "../handlerFunctions/ModalHandler.js";
+import React, { useCallback, useState } from "react";
+import { modalStyles,handleToggleModal } from "../handlerFunctions/ModalHandler.js";
 import useFetchModalData from "../hooks/useFetchModalData.jsx";
 import useModalState from "../hooks/useModalState.jsx";
 import TemplateModal from "./templates/TemplateModal.jsx";
-import DelayModal from "./DelayModal.jsx";
+import DelayModal from "./delays/DelayModal.jsx";
 import CloseButton from "./buttons/CloseButton.jsx";
 import LeadModal from "./leads/LeadModal.jsx";
 
