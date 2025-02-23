@@ -49,11 +49,12 @@ async function initializeAgenda() {
 }
 
 async function sendMsgWithDelay(lead, template, delayHours) {
+
     if (!lead.email || !template.subject || !template.content) {
         throw new Error("Missing required lead or template data");
     }
 
-    if (delayHours <0 || isNaN(delayHours)) {
+    if (delayHours < 0 || isNaN(delayHours)) {
         throw new Error("Invalid delayTime provided");
     }
 
@@ -61,11 +62,14 @@ async function sendMsgWithDelay(lead, template, delayHours) {
         
         await initializeAgenda();
 
-        const delayTime = delayHours * 60 * 60 * 1000;
+        const delayTime = delayHours * 60 * 1000;
 
-        const jobTime = new Date(Date.now() + delayTime);
+        const jobTime = new Date(Date.now() + delayTime).toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
+        console.log("Scheduling message for:", jobTime);
+        
         
         await agenda.schedule(jobTime, 'send message', { lead, template });
+        console.log("Job scheduled successfully.");
 
         return true
     } catch (error) {
