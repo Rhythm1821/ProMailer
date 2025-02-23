@@ -5,6 +5,7 @@ import mongoose from 'mongoose'
 import { addLead, getAllLeads } from './src/controllers/list.controller.js'
 import { addTemplate, getAllTemplates } from './src/controllers/template.controller.js'
 import { addWorkflow, getWorkflows } from './src/controllers/workflow.controller.js'
+import { initializeAgenda } from './src/utils.js'
 
 const connectDB = async () => {
     try {
@@ -19,6 +20,7 @@ const app = express()
 app.use(express.json());
 app.use(cors())
 connectDB()
+initializeAgenda().then(() => console.log('Agenda initialized'))
 
 app.get('/api/test', (req, res) => {
     res.send({msg: 'Hello World!'})
