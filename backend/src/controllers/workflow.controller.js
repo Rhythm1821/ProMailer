@@ -3,7 +3,7 @@ import workflowModel from "../models/workflow.model.js";
 
 export async function addWorkflow(request, response) {
     try {
-        const { nodes, edges, lead, template, delay } = request.body        
+        const { nodes, edges, lead, template, delay, delayType } = request.body        
 
         if (!nodes || !edges) {
             return response.status(400).json({ msg: 'No workflow found' })
