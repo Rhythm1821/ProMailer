@@ -4,7 +4,7 @@ import cors from 'cors'
 import mongoose from 'mongoose'
 import { addLead, getAllLeads } from './src/controllers/list.controller.js'
 import { addTemplate, getAllTemplates } from './src/controllers/template.controller.js'
-import { addWorkflow, getWorkflows } from './src/controllers/workflow.controller.js'
+import { addWorkflow, deleteAllWorkflows, deleteWorkflow, getWorkflows } from './src/controllers/workflow.controller.js'
 import { initializeAgenda } from './src/utils.js'
 
 const connectDB = async () => {
@@ -34,6 +34,8 @@ app.post('/api/templates', addTemplate)
 
 app.post('/api/workflows', addWorkflow)
 app.get('/api/workflows', getWorkflows)
+app.delete('/api/workflows/:id', deleteWorkflow)
+app.delete('/api/workflows', deleteAllWorkflows)
 
 app.listen(3000, () => {
     console.log('Server running on port 3000')

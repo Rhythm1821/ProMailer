@@ -1,7 +1,12 @@
 const handleSave = (nodes, edges, currentLead, currentTemplate, delay) => {
     if (nodes.length === 0 || edges.length === 0) {
-        alert('Please add nodes and edges to save the workflow');
-        return
+        // A confirmation dialog box
+        if (window.confirm('Are you sure you want to delete the workflow?')) {
+            fetch('http://localhost:3000/api/workflows', {
+                method: 'DELETE',
+            })
+            return
+        }
     }
     const data = {
         lead: currentLead,
