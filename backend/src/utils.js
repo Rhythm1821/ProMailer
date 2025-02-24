@@ -59,10 +59,7 @@ async function sendMsgWithDelay(lead, template, delayHours) {
     }
 
     try {
-        
-        await initializeAgenda();
-
-        const delayTime = delayHours * 60 * 1000;
+        const delayTime = delayHours * 60 * 60 * 1000;
 
         const jobTime = new Date(Date.now() + delayTime).toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
         console.log("Scheduling message for:", jobTime);
@@ -79,4 +76,4 @@ async function sendMsgWithDelay(lead, template, delayHours) {
 }
 
 
-export { sendMsgWithDelay }
+export { sendMsgWithDelay, initializeAgenda }
