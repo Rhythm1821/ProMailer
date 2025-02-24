@@ -1,4 +1,4 @@
-const handleSave = (nodes, edges, currentLead, currentTemplate, delay) => {
+const handleSave = (nodes, edges, currentLead, currentTemplate, delay, delayType) => {
     if (nodes.length === 0 || edges.length === 0) {
         // A confirmation dialog box
         if (window.confirm('Are you sure you want to delete the workflow?')) {
@@ -11,7 +11,10 @@ const handleSave = (nodes, edges, currentLead, currentTemplate, delay) => {
     const data = {
         lead: currentLead,
         template: currentTemplate,
-        delay,
+        delay: {
+            time: Number(delay),
+            type: delayType
+        },
         nodes,
         edges,
     }
