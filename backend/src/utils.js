@@ -48,18 +48,30 @@ async function initializeAgenda() {
     }
 }
 
-async function sendMsgWithDelay(lead, template, delayHours) {
+async function sendMsgWithDelay(lead, template, delay) {
 
     if (!lead.email || !template.subject || !template.content) {
         throw new Error("Missing required lead or template data");
     }
 
-    if (delayHours < 0 || isNaN(delayHours)) {
+    if (delay.time < 0 || isNaN(delay.time)) {
         throw new Error("Invalid delayTime provided");
     }
-
+    const delayType = delay.type
+    let delayTime;
     try {
-        const delayTime = delayHours * 60 * 60 * 1000;
+        if(delayType==='Days'){
+            delayTime = delay.time * 24 * 60 * 60 * 1000;
+        }
+        else if(delayType==='Hours'){
+            delayTime = delay.time * 60 * 60 * 1000;
+        }
+        else if(delayType==='Minutes'){
+            delayTime = delay.time * 60 * 1000;
+        }
+        else{
+            throw new Error("Invalid delayType provided");
+        }
 
         const jobTime = new Date(Date.now() + delayTime).toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
         console.log("Scheduling message for:", jobTime);
