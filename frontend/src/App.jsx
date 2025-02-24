@@ -29,6 +29,7 @@ export default function App() {
   const [currentLead, setCurrentLead] = useState({});
   const [currentTemplate, setCurrentTemplate] = useState({});
   const [delay, setDelay] = useState(0);
+  const [delayType, setDelayType] = useState('');
 
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
@@ -56,7 +57,7 @@ export default function App() {
     }
   }
 
-  const addNewNode = (selectedData, nodeType) => {
+  const addNewNode = (selectedData, nodeType, delayType) => {
     const newNodeId = `node-${nodes.length + 1}`;
 
     const newNode = {
@@ -84,6 +85,7 @@ export default function App() {
       setCurrentTemplate(selectedData[0])
     } else if (nodeType === 'delay') {
       setDelay(selectedData[0])
+      setDelayType(delayType)
     }
 
     setNodes((prevNodes) => {
@@ -170,7 +172,7 @@ export default function App() {
       }
 
 
-      <button style={{ position: 'absolute', top: '10px', right: '10px', color: '#fff' }} onClick={() => handleSave(nodes, edges, currentLead, currentTemplate, delay)} type="submit">Save</button>
+      <button style={{ position: 'absolute', top: '10px', right: '10px', color: '#fff' }} onClick={() => handleSave(nodes, edges, currentLead, currentTemplate, delay, delayType)} type="submit">Save</button>
 
       {/* Render the modal */}
       <Modal
