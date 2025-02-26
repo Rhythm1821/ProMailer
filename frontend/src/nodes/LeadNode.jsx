@@ -1,5 +1,4 @@
 import { Handle } from "@xyflow/react";
-import { handleNodeEdit, handleNodeRemove } from "../handlerFunctions/AppHandler";
 import EditAndRemoveNodeButton from "../components/buttons/EditAndRemoveNodeButton";
 
 export default function LeadNode({ data }) {
