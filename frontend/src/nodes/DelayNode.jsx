@@ -1,6 +1,8 @@
 import { Handle } from "@xyflow/react";
+import EditAndRemoveNodeButton from "../components/buttons/EditAndRemoveNodeButton";
 
 export default function DelayNode({ data }) {
+    const { id, setNodes, setEdges } = data;
     return (
         <div className="group" style={{
             padding: '16px',
@@ -47,17 +49,18 @@ export default function DelayNode({ data }) {
                         color: '#6b7280',
                         fontWeight: '500'
                     }}>
-                        Delay Template
+                        Delay
                     </span>
                     <span style={{
                         fontSize: '16px',
                         color: '#111827',
                         fontWeight: '600'
                     }}>
-                        {data.label}
+                        {data.label} {data.delayType}
                     </span>
                 </div>
             </div>
+            <EditAndRemoveNodeButton id={id} setNodes={setNodes} setEdges={setEdges} />
             <Handle
                 type="source"
                 position="bottom"

@@ -1,6 +1,10 @@
 import { Handle } from "@xyflow/react";
+import { handleNodeEdit, handleNodeRemove } from "../handlerFunctions/AppHandler";
+import EditAndRemoveNodeButton from "../components/buttons/EditAndRemoveNodeButton";
 
 export default function LeadNode({ data }) {
+  const { id, setNodes, setEdges } = data;
+  
   return (
     <div className="group" style={{
       padding: '16px',
@@ -10,7 +14,8 @@ export default function LeadNode({ data }) {
       width: '200px',
       border: '1px solid #f0f0f0',
       position: 'relative',
-      transition: 'all 0.2s ease'
+      transition: 'all 0.2s ease',
+      color: '#111827'
     }}>
       <Handle
         type="target"
@@ -36,10 +41,7 @@ export default function LeadNode({ data }) {
           alignItems: 'center',
           justifyContent: 'center'
         }}>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ec4899" strokeWidth="2">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-            <circle cx="12" cy="7" r="4" />
-          </svg>
+          🗿
         </div>
         <div style={{
           display: 'flex',
@@ -61,6 +63,8 @@ export default function LeadNode({ data }) {
           </span>
         </div>
       </div>
+      {/* Edit & Delete Buttons */}
+      <EditAndRemoveNodeButton id={id} setNodes={setNodes} setEdges={setEdges} />
       <Handle
         type="source"
         position="bottom"

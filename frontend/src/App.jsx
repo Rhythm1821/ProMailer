@@ -25,7 +25,7 @@ import DelayNode from './nodes/DelayNode';
 export default function App() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const [modalInfo, setModalInfo] = useState({ isOpen: false, nodeId: null, nodeType: null, includeDelay: false });
+  const [modalInfo, setModalInfo] = useState({ isOpen: false, nodeId: null, nodeType: null });
   const [currentLead, setCurrentLead] = useState({});
   const [currentTemplate, setCurrentTemplate] = useState({});
   const [delay, setDelay] = useState(0);
@@ -45,40 +45,47 @@ export default function App() {
       if (leadNodePresent) {
         return
       }
-      setModalInfo({ isOpen: true, nodeId: node.id, nodeType: 'leadSource', includeDelay: false });
+      setModalInfo({ isOpen: true, nodeId: node.id, nodeType: 'leadSource'});
     } else if (node.type === 'addNode') {
-      const templateNodePresent = nodes.some((n) => n.type === 'templateNode');
-      if (templateNodePresent) {
-        setModalInfo({ isOpen: true, nodeId: node.id, nodeType: 'addNode', includeDelay: true });
-
-      } else {
-        setModalInfo({ isOpen: true, nodeId: node.id, nodeType: 'addNode', includeDelay: false });
-      }
+        setModalInfo({ isOpen: true, nodeId: node.id, nodeType: 'addNode' });
     }
   }
 
   const addNewNode = (selectedData, nodeType, delayType) => {
     const newNodeId = `node-${nodes.length + 1}`;
 
+    // Create the new node
     const newNode = {
       id: newNodeId,
       position: { x: 540, y: nodes.length * 100 },
-      data: { label: nodeType !== 'delay' ? selectedData[0].name : selectedData },
+      data: {
+        id: newNodeId,
+        label: nodeType !== 'delay' ? selectedData[0].name : selectedData,
+        delayType: nodeType==='delay' ? delayType : null,
+        setNodes,
+        setEdges,
+      },
       type: nodeType === 'leadSource' ? 'leadNode' : nodeType === 'delay' ? 'delayNode' : 'templateNode',
     };
 
+    // Find the addNode node
     const currentAddNode = nodes.find((node) => node.id === 'addNode');
+
+
+    // Update the position of the addNode node
     const updatedAddNode = {
       ...currentAddNode,
       position: { x: newNode.position.x, y: newNode.position.y + 200 },
     };
 
+    // Create the edge to connect the new node to the addNode node
     const newEdgeToAddNode = {
       id: `edge-${edges.length + 1}`,
       source: newNodeId,
       target: 'addNode',
     };
 
+    // Update the current lead or template based on the nodeType
     if (nodeType === 'leadSource') {
       setCurrentLead(selectedData[0])
     } else if (nodeType === 'addNode') {
@@ -105,7 +112,7 @@ export default function App() {
       return [...updatedEdges, newEdgeToAddNode];
     });
 
-    setModalInfo({ isOpen: false, nodeId: null, nodeType: null, includeDelay: false });
+    setModalInfo({ isOpen: false, nodeId: null, nodeType: null });
   };
 
 
@@ -126,62 +133,15 @@ export default function App() {
         <Background variant="dots" gap={12} size={1} />
       </ReactFlow>
 
-      {/* Render dynamic buttons for each node edit and delete */}
-      {
-        nodes.map((node) => (
-          node.type !== 'addNode' && node.type !== 'leadSource' && (
-            <div
-              key={`buttons-${node.id}`} // Use a unique key for each node
-              style={{
-                position: 'absolute',
-                top: node.position.y - 20, // Adjust based on your UI
-                left: node.position.x + 20, // Adjust based on your UI
-                zIndex: 10,
-              }}
-            >
-              <button
-                onClick={() => handleNodeEdit(node.id)}
-                style={{
-                  padding: '4px 8px',
-                  marginRight: '5px',
-                  backgroundColor: '#007bff',
-                  color: '#fff',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                }}
-              >
-                ✏️
-              </button>
-              <button
-                onClick={() => handleNodeRemove(node.id, setNodes, setEdges)}
-                style={{
-                  padding: '4px 8px',
-                  backgroundColor: '#dc3545',
-                  color: '#fff',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                }}
-              >
-                X
-              </button>
-            </div>
-          )
-        ))
-      }
-
-
       <button style={{ position: 'absolute', top: '10px', right: '10px', color: '#fff' }} onClick={() => handleSave(nodes, edges, currentLead, currentTemplate, delay, delayType)} type="submit">Save</button>
 
       {/* Render the modal */}
       <Modal
         isOpen={modalInfo.isOpen}
-        onClose={() => setModalInfo({ isOpen: false, nodeId: null, nodeType: null, includeDelay: false })}
+        onClose={() => setModalInfo({ isOpen: false, nodeId: null, nodeType: null })}
         nodeId={modalInfo.nodeId}
         nodeType={modalInfo.nodeType}
         addNewNode={addNewNode}
-        includeDelay={modalInfo.includeDelay}
       />
 
     </div>

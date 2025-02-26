@@ -1,6 +1,8 @@
 import { Handle } from "@xyflow/react";
+import EditAndRemoveNodeButton from "../components/buttons/EditAndRemoveNodeButton";
 
 export default function TemplateNode({ data }) {
+  const { id, setNodes, setEdges } = data;
   return (
     <div className="group" style={{
       padding: '16px',
@@ -58,6 +60,7 @@ export default function TemplateNode({ data }) {
           </span>
         </div>
       </div>
+      <EditAndRemoveNodeButton id={id} setNodes={setNodes} setEdges={setEdges} />
       <Handle
         type="source"
         position="bottom"
