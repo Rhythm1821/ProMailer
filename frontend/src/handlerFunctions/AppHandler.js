@@ -1,12 +1,16 @@
 const handleSave = (nodes, edges, currentLead, currentTemplate, delay, delayType) => {
     if (nodes.length === 0 || edges.length === 0) {
-        // A confirmation dialog box
         if (window.confirm('Are you sure you want to delete the workflow?')) {
             fetch('http://localhost:3000/api/workflows', {
                 method: 'DELETE',
             })
             return
         }
+    }
+    const leadNode = nodes.find(node => node.type === 'lead');
+    if (!leadNode) {
+        alert('You must select a lead to start the workflow');
+        return;
     }
     const data = {
         lead: currentLead,
@@ -55,4 +59,9 @@ const handleNodeRemove = (nodeId, setNodes, setEdges) => {
     });
 };
 
-export { handleSave, handleNodeRemove };
+const handleNodeEdit = (nodeId) => {
+    console.log("Edit node logic here!!");
+    
+};
+
+export { handleSave, handleNodeRemove, handleNodeEdit };

@@ -7,7 +7,7 @@ import DelayModal from "./delays/DelayModal.jsx";
 import CloseButton from "./buttons/CloseButton.jsx";
 import LeadModal from "./leads/LeadModal.jsx";
 
-export default function Modal({ isOpen, onClose, nodeId, nodeType, addNewNode, includeDelay }) {
+export default function Modal({ isOpen, onClose, nodeId, nodeType, addNewNode }) {
   const [data, setData] = useState([]);
   const [selectedInstances, setSelectedInstances] = useState({});
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -84,7 +84,6 @@ export default function Modal({ isOpen, onClose, nodeId, nodeType, addNewNode, i
               nodeId={nodeId}
               nodeType={nodeType}
               addNewNode={addNewNode}
-              includeDelay={includeDelay}
               selectedInstances={selectedInstances}
               setSelectedInstances={setSelectedInstances}
               isAddingNew={isAddingNew}
