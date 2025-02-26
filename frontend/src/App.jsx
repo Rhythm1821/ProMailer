@@ -17,7 +17,7 @@ import SequenceStartNode from './nodes/SequenceStartNode';
 import Modal from './components/Modal';
 import TemplateNode from './nodes/TemplateNode';
 import LeadNode from './nodes/LeadNode';
-import { handleNodeRemove, handleSave } from './handlerFunctions/AppHandler';
+import { handleSave } from './handlerFunctions/AppHandler';
 import useFetchWorkflows from './hooks/useFetchWorkflows';
 import DelayNode from './nodes/DelayNode';
 
@@ -31,17 +31,16 @@ export default function App() {
   const [delay, setDelay] = useState(0);
   const [delayType, setDelayType] = useState('');
 
-  const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
-    [setEdges]
-  );
+  const onConnect = (params) => {
+    setEdges((eds) => addEdge(params, eds));
+  }
 
   useFetchWorkflows(setNodes, setEdges);
 
 
   const onNodeClick = (e, node) => {
     if (node.type === 'leadSource') {
-      const leadNodePresent = nodes.some((n) => n.type === 'leadNode');
+      const leadNodePresent = nodes && Array.isArray(nodes) && nodes.some((n) => n.type === 'leadNode');
       if (leadNodePresent) {
         return
       }
@@ -52,15 +51,19 @@ export default function App() {
   }
 
   const addNewNode = (selectedData, nodeType, delayType) => {
+    if (!nodes || !Array.isArray(nodes)) return;
     const newNodeId = `node-${nodes.length + 1}`;
-
+// const leadNodePresent = nodes.some((n) => n.type === 'leadNode');
+      // if (leadNodePresent) {
+      //   return
+      // }
     // Create the new node
     const newNode = {
       id: newNodeId,
       position: { x: 540, y: nodes.length * 100 },
       data: {
         id: newNodeId,
-        label: nodeType !== 'delay' ? selectedData[0].name : selectedData,
+        label: nodeType !== 'delay' ? selectedData[0]?.name : selectedData,
         delayType: nodeType==='delay' ? delayType : null,
         setNodes,
         setEdges,
@@ -72,6 +75,7 @@ export default function App() {
     const currentAddNode = nodes.find((node) => node.id === 'addNode');
 
 
+    if (!currentAddNode) return
     // Update the position of the addNode node
     const updatedAddNode = {
       ...currentAddNode,
@@ -86,6 +90,7 @@ export default function App() {
     };
 
     // Update the current lead or template based on the nodeType
+    
     if (nodeType === 'leadSource') {
       setCurrentLead(selectedData[0])
     } else if (nodeType === 'addNode') {
@@ -96,20 +101,25 @@ export default function App() {
     }
 
     setNodes((prevNodes) => {
+      if (!prevNodes) return []
       const filteredNodes = prevNodes.filter((node) => node.id !== 'addNode');
       return [...filteredNodes, newNode, updatedAddNode];
     });
 
     setEdges((prevEdges) => {
-      const updatedEdges = [...prevEdges];
-      if (updatedEdges.length > 0) {
-        updatedEdges[updatedEdges.length - 1] = {
-          ...updatedEdges[updatedEdges.length - 1],
-          target: newNodeId,
-        };
+      if (!prevEdges) return []
+      if (nodeType!=="leadSource") {
+        const updatedEdges = [...prevEdges];
+        if (updatedEdges.length > 0) {
+          updatedEdges[updatedEdges.length - 1] = {
+            ...updatedEdges[updatedEdges.length - 1],
+            target: newNodeId,
+          };
+        }
+  
+        return [...updatedEdges, newEdgeToAddNode];
       }
-
-      return [...updatedEdges, newEdgeToAddNode];
+      return prevEdges;
     });
 
     setModalInfo({ isOpen: false, nodeId: null, nodeType: null });

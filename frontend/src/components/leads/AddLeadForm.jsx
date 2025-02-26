@@ -24,21 +24,21 @@ export default function AddLeadForm(
                 onChange={(e) => handleInputChange(e, setNewItemData, newItemData)}
                 style={modalStyles.input}
             />
-            <input
+            {/* <input
                 type="tel"
                 name="phone"
                 placeholder="Phone"
                 onChange={(e) => handleInputChange(e, setNewItemData, newItemData)}
                 style={modalStyles.input}
-            />
-            <input
+            /> */}
+            {/* <input
                 type="text"
                 name="company"
                 placeholder="Company"
                 onChange={(e) => handleInputChange(e, setNewItemData, newItemData)}
                 style={modalStyles.input}
-            />
-            <select
+            /> */}
+            {/* <select
                 name="status"
                 onChange={(e) => handleInputChange(e, setNewItemData, newItemData)}
                 style={modalStyles.input}
@@ -48,7 +48,7 @@ export default function AddLeadForm(
                 <option value="Contacted">Contacted</option>
                 <option value="Unresponsive">Unresponsive</option>
                 <option value="Converted">Converted</option>
-            </select>
+            </select> */}
             <button
                 onClick={() => setIsAddingNew(false)}
                 style={{

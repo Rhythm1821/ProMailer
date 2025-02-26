@@ -7,7 +7,7 @@ const handleSave = (nodes, edges, currentLead, currentTemplate, delay, delayType
             return
         }
     }
-    const leadNode = nodes.find(node => node.type === 'lead');
+    const leadNode = nodes.find(node => node.type === 'leadNode');
     if (!leadNode) {
         alert('You must select a lead to start the workflow');
         return;

@@ -14,15 +14,15 @@ export async function addLead(request, response) {
     try {
         const { name, email, phone, company, status } = request.body
 
-        if (!name || !email || !phone || !company) {
-            return response.status(400).json({ msg: 'All fields are required' })
-        }
+        // if (!name || !email || !phone || !company) {
+        //     return response.status(400).json({ msg: 'All fields are required' })
+        // }
         const newLead = await leadModel.create({
             name,
             email,
-            phone,
-            company,
-            status: status || 'Pending'
+            // phone,
+            // company,
+            // status: status || 'Pending'
         })
 
         await newLead.save()
