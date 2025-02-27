@@ -8,7 +8,15 @@ export default function useFetchWorkflows(setNodes, setEdges) {
           .then(data => {
             const { nodes, edges } = data;
             if (nodes && edges) {
-              setNodes(nodes);
+              const updatedNodes = nodes.map(node => ({
+                ...node,
+                data: {
+                  ...node.data,
+                  setNodes,
+                  setEdges,
+                }
+              }));
+              setNodes(updatedNodes);
               setEdges(edges);
             }
           })
