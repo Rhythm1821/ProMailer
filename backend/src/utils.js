@@ -54,7 +54,7 @@ async function sendMsgWithDelay(lead, template, delay) {
         throw new Error("Missing required lead or template data");
     }
 
-    if (delay.time < 0 || isNaN(delay.time)) {
+    if (delay.time <= 0 || isNaN(delay.time)) {
         throw new Error("Invalid delayTime provided");
     }
     const delayType = delay.type

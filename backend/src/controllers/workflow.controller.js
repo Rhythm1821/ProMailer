@@ -27,7 +27,7 @@ export async function addWorkflow(request, response) {
 
         return response.json({ msg: 'Something went wrong' })
     } catch (error) {
-        throw new Error("Error adding workflow: " + error.message);
+        return response.status(500).json("Error adding workflow: " + error.message);
     }
     
 }
