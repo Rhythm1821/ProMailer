@@ -1,11 +1,11 @@
 const fetchLeadSource = async () => {
-    const res = await fetch('http://localhost:3000/leadSource');
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/leadSource`);
     const data = await res.json();
     return data;
 }
 
 const fetchTemplates = async () => {
-    const res = await fetch('http://localhost:3000/templates');
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/templates`);
     const data = await res.json();
     return data;
 }
