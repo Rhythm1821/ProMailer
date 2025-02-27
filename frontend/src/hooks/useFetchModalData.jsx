@@ -7,11 +7,11 @@ export default function useFetchModalData(isOpen, nodeId, nodeType, setData) {
             let fetchedData = [];
     
             if (nodeType === 'leadSource') {
-              fetchedData = await fetch(`/api/leads`)
+              fetchedData = await fetch(`${import.meta.env.VITE_API_URL}/leads`)
                 .then((res) => res.json())
                 .then((data) => data.allLeads || []);
             } else if (nodeType === 'addNode') {
-              fetchedData = await fetch(`/api/templates`)
+              fetchedData = await fetch(`${import.meta.env.VITE_API_URL}/templates`)
                 .then((res) => res.json())
                 .then((data) => data.allTemplates || []);
             }

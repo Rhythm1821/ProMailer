@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 export default function useFetchWorkflows(setNodes, setEdges) {
     useEffect(() => {
-        fetch(`http://localhost:3000/api/workflows`)
+        fetch(`${import.meta.env.VITE_API_URL}/workflows`)
           .then(res => res.json())
           .then(data => data.allWorkflows ? data.allWorkflows[0] : {})
           .then(data => {
