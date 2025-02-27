@@ -62,7 +62,7 @@ const handleRemove = (itemToRemove, selectedInstances, setSelectedInstances) => 
 };
 
 const handleSubmitNewNode = async (nodeType, setData, setIsAddingNew, setNewItemData, newItemData) => {
-    const endpoint = nodeType === 'leadSource' ? '/api/leads' : '/api/templates';
+    const endpoint = nodeType === 'leadSource' ? '/leads' : '/templates';
     const api = `${import.meta.env.VITE_API_URL}${endpoint}`;
     
     try {

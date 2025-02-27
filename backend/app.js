@@ -16,9 +16,18 @@ const connectDB = async () => {
     }
 }
 
+const corsOptions = {
+    origin: ["https://frontend-three-gamma-79.vercel.app", "http://localhost:5173"],
+    methods: "GET,POST,PUT,DELETE",
+    allowedHeaders: "Content-Type,Authorization"
+};
+
+
 const app = express()
 app.use(express.json());
-app.use(cors())
+app.use(cors(corsOptions))
+app.options("*", cors(corsOptions));
+
 connectDB()
 initializeAgenda().then(() => console.log('Agenda initialized'))
 
@@ -37,6 +46,9 @@ app.get('/api/workflows', getWorkflows)
 app.delete('/api/workflows/:id', deleteWorkflow)
 app.delete('/api/workflows', deleteAllWorkflows)
 
-app.listen(3000, () => {
-    console.log('Server running on port 3000')
-})
+// Uncomment when in local development
+// app.listen(3000, () => {
+//     console.log('Server running on port 3000')
+// })
+
+export default app
