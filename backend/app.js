@@ -46,9 +46,6 @@ app.get('/api/workflows', getWorkflows)
 app.delete('/api/workflows/:id', deleteWorkflow)
 app.delete('/api/workflows', deleteAllWorkflows)
 
-// Uncomment when in local development
-// app.listen(3000, () => {
-//     console.log('Server running on port 3000')
-// })
-
-export default app
+app.listen(3000, () => {
+    console.log('Server running on port 3000')
+})
