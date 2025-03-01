@@ -44,19 +44,15 @@ export default function App() {
       if (leadNodePresent) {
         return
       }
-      setModalInfo({ isOpen: true, nodeId: node.id, nodeType: 'leadSource'});
+      setModalInfo({ isOpen: true, nodeId: node.id, nodeType: 'leadSource' });
     } else if (node.type === 'addNode') {
-        setModalInfo({ isOpen: true, nodeId: node.id, nodeType: 'addNode' });
+      setModalInfo({ isOpen: true, nodeId: node.id, nodeType: 'addNode' });
     }
   }
 
   const addNewNode = (selectedData, nodeType, delayType) => {
     if (!nodes || !Array.isArray(nodes)) return;
-    const newNodeId = `node-${nodes.length + 1}`;
-// const leadNodePresent = nodes.some((n) => n.type === 'leadNode');
-      // if (leadNodePresent) {
-      //   return
-      // }
+    const newNodeId = crypto.randomUUID();
     // Create the new node
     const newNode = {
       id: newNodeId,
@@ -64,7 +60,7 @@ export default function App() {
       data: {
         id: newNodeId,
         label: nodeType !== 'delay' ? selectedData[0]?.name : selectedData,
-        delayType: nodeType==='delay' ? delayType : null,
+        delayType: nodeType === 'delay' ? delayType : null,
         setNodes,
         setEdges,
       },
@@ -90,7 +86,7 @@ export default function App() {
     };
 
     // Update the current lead or template based on the nodeType
-    
+
     if (nodeType === 'leadSource') {
       setCurrentLead(selectedData[0])
     } else if (nodeType === 'addNode') {
@@ -108,7 +104,7 @@ export default function App() {
 
     setEdges((prevEdges) => {
       if (!prevEdges) return []
-      if (nodeType!=="leadSource") {
+      if (nodeType !== "leadSource") {
         const updatedEdges = [...prevEdges];
         if (updatedEdges.length > 0) {
           updatedEdges[updatedEdges.length - 1] = {
@@ -116,7 +112,7 @@ export default function App() {
             target: newNodeId,
           };
         }
-  
+
         return [...updatedEdges, newEdgeToAddNode];
       }
       return prevEdges;
@@ -124,7 +120,6 @@ export default function App() {
 
     setModalInfo({ isOpen: false, nodeId: null, nodeType: null });
   };
-
 
 
   return (
