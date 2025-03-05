@@ -1,4 +1,4 @@
-const handleSave = (nodes, edges, currentLead, currentTemplate, delay, delayType) => {
+const handleSave = (nodes, edges, currentLead, templates, delays, delayType) => {
     if (nodes.length === 0 || edges.length === 0) {
         if (window.confirm('Are you sure you want to delete the workflow?')) {
             fetch(`${import.meta.env.VITE_API_URL}/workflows`, {
@@ -14,11 +14,8 @@ const handleSave = (nodes, edges, currentLead, currentTemplate, delay, delayType
     }
     const data = {
         lead: currentLead,
-        template: currentTemplate,
-        delay: {
-            time: Number(delay),
-            type: delayType
-        },
+        templates,
+        delays,
         nodes,
         edges,
     }
@@ -59,6 +56,7 @@ const handleNodeRemove = (nodeId, setNodes, setEdges) => {
     });
 };
 
+  
 const handleNodeEdit = (nodeId) => {
     console.log("Edit node logic here!!");
     

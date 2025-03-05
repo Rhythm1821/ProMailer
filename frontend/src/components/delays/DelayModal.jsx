@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { handleInsert, modalStyles } from "../../handlerFunctions/ModalHandler.js";
 
 export default function DelayModal({ isOpen, onClose, addNewNode, closeModal }) {
-  const [delay, setDelay] = useState(0);
-  const [delayType, setDelayType] = useState('Days');
+  const [delay, setDelay] = useState(1);
+  const [delayType, setDelayType] = useState('Minutes');
 
   if (!isOpen) return null;
 
@@ -24,9 +24,9 @@ export default function DelayModal({ isOpen, onClose, addNewNode, closeModal }) 
         onChange={(e) => setDelayType(e.target.value)}
         style={modalStyles.input}
       >
-        <option value="Days">Days</option>
-        <option value="Hours">Hours</option>
         <option value="Minutes">Minutes</option>
+        <option value="Hours">Hours</option>
+        <option value="Days">Days</option>
       </select>
       <button
         onClick={onClose}

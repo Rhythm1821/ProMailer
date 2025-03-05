@@ -27,9 +27,8 @@ export default function App() {
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [modalInfo, setModalInfo] = useState({ isOpen: false, nodeId: null, nodeType: null });
   const [currentLead, setCurrentLead] = useState({});
-  const [currentTemplate, setCurrentTemplate] = useState({});
-  const [delay, setDelay] = useState(0);
-  const [delayType, setDelayType] = useState('');
+  const [templates, setTemplates] = useState([]);
+  const [delays, setDelays] = useState([]);
 
   const onConnect = (params) => {
     setEdges((eds) => addEdge(params, eds));
@@ -90,10 +89,12 @@ export default function App() {
     if (nodeType === 'leadSource') {
       setCurrentLead(selectedData[0])
     } else if (nodeType === 'addNode') {
-      setCurrentTemplate(selectedData[0])
+      setTemplates(prev => [...prev,selectedData[0]])
     } else if (nodeType === 'delay') {
-      setDelay(selectedData[0])
-      setDelayType(delayType)
+      console.log("selectedData", selectedData);
+      
+      setDelays(prev => [...prev,{time: selectedData, type: delayType}])
+      
     }
 
     setNodes((prevNodes) => {
@@ -120,7 +121,8 @@ export default function App() {
 
     setModalInfo({ isOpen: false, nodeId: null, nodeType: null });
   };
-
+  console.log(nodes, edges);
+  
 
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
@@ -138,7 +140,12 @@ export default function App() {
         <Background variant="dots" gap={12} size={1} />
       </ReactFlow>
 
-      <button style={{ position: 'absolute', top: '10px', right: '10px', color: '#fff' }} onClick={() => handleSave(nodes, edges, currentLead, currentTemplate, delay, delayType)} type="submit">Save</button>
+      <button 
+        style={{ position: 'absolute', top: '10px', right: '10px', color: '#fff' }} 
+        onClick={() => handleSave(nodes, edges, currentLead, templates, delays)} 
+        type="submit">
+          Save
+      </button>
 
       {/* Render the modal */}
       <Modal
