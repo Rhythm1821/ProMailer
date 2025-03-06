@@ -3,31 +3,34 @@ import workflowModel from "../models/workflow.model.js";
 
 export async function addWorkflow(request, response) {
     try {
-        const { nodes, edges, lead, template, delay } = request.body        
+        const { nodes, edges, lead, templates, delays } = request.body  
 
         if (!nodes || !edges) {
             return response.status(400).json({ msg: 'Nodes and edges are required' })
         }
-        const existingWorkflow = await workflowModel.findOne({ lead, template, delay, nodes, edges })
+        const existingWorkflow = await workflowModel.findOne({ lead, templates, delays, nodes, edges })
         if (existingWorkflow) {
             return response.json({ msg: 'Workflow saved already' })
         }
         const newWorkflow = await workflowModel.create({
             lead,
-            template,
-            delay,
+            templates,
+            delays,
             nodes,
             edges
         })
-        const isScheduled = await sendMsgWithDelay(lead, template, delay)
-        if (isScheduled) {
-            await newWorkflow.save()
-            return response.json({ msg: 'workflow added. Template is scheduled!!' })
+        for (let i = 0; i < templates.length; i++) {
+            const delay = delays[i];
+            const isScheduled = await sendMsgWithDelay(lead, templates[i], delay)
+            if (isScheduled) {
+                await newWorkflow.save()
+                return response.json({ msg: 'workflow added. Template is scheduled!!' })
+            }
         }
 
         return response.json({ msg: 'Something went wrong' })
     } catch (error) {
-        return response.status(500).json("Error adding workflow: " + error.message);
+        throw new Error("Error adding workflow: " + error);
     }
     
 }
