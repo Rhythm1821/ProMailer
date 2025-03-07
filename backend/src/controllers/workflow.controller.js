@@ -45,7 +45,7 @@ export async function getWorkflows(request, response) {
         
         return response.json({ allWorkflows })
     } catch (error) {
-        return response.status(500).json("Error getting workflows: " + error.message);
+        throw new Error("Error getting workflows: " + error.message);
     }
 }
 
@@ -63,7 +63,7 @@ export async function deleteWorkflow(request,response) {
         await workflow.delete()
         return response.json({ msg: 'Workflow deleted' })
     } catch (error) {
-        return response.status(500).json("Error deleting workflow: " + error.message);
+        throw new Error("Error deleting workflow: " + error.message);
     }
 }
 
@@ -72,6 +72,6 @@ export async function deleteAllWorkflows(request, response) {
         await workflowModel.deleteMany()
         return response.json({ msg: 'All workflows deleted' })
     } catch (error) {
-        return response.status(500).json("Error deleting all workflows: " + error.message);
+        throw new Error("Error deleting all workflows: " + error.message);
     }
 }
