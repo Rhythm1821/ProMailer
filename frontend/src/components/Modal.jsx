@@ -39,41 +39,41 @@ export default function Modal({ isOpen, onClose, nodeId, nodeType, addNewNode })
 
         {
           nodeType !== 'leadSource' ? (
-              <>
-                <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px', color: '#333' }}>
-                  <button onClick={() => handleToggleModal('templateModal', setOpenDelayModal, setOpenTemplateModal)}>Template</button>
-                  <button onClick={() => handleToggleModal('delayModal', setOpenDelayModal, setOpenTemplateModal)}>Delay</button>
-                </h2>
-              </>
-            ) : (
-              <>
-                <h2 style={{
-                  fontSize: '24px',
-                  fontWeight: 'bold',
-                  marginBottom: '8px',
-                  color: '#333'
-                }}>
-                  Leads from List(s)
-                </h2>
-                <LeadModal
-                  isOpen={isOpen}
-                  onClose={onClose}
-                  nodeType={nodeType}
-                  nodeId={nodeId}
-                  addNewNode={addNewNode}
-                  data={data}
-                  setData={setData}
-                  isAddingNew={isAddingNew}
-                  setIsAddingNew={setIsAddingNew}
-                  newItemData={newItemData}
-                  setNewItemData={setNewItemData}
-                  selectedInstances={selectedInstances}
-                  isDropdownOpen={isDropdownOpen}
-                  setIsDropdownOpen={setIsDropdownOpen}
-                  setSelectedInstances={setSelectedInstances}
-                />
-              </>
-            )
+            <>
+              <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px', color: '#333' }}>
+                <button onClick={() => handleToggleModal('templateModal', setOpenDelayModal, setOpenTemplateModal)}>Template</button>
+                <button onClick={() => handleToggleModal('delayModal', setOpenDelayModal, setOpenTemplateModal)}>Delay</button>
+              </h2>
+            </>
+          ) : (
+            <>
+              <h2 style={{
+                fontSize: '24px',
+                fontWeight: 'bold',
+                marginBottom: '8px',
+                color: '#333'
+              }}>
+                Leads from List(s)
+              </h2>
+              <LeadModal
+                isOpen={isOpen}
+                onClose={onClose}
+                nodeType={nodeType}
+                nodeId={nodeId}
+                addNewNode={addNewNode}
+                data={data}
+                setData={setData}
+                isAddingNew={isAddingNew}
+                setIsAddingNew={setIsAddingNew}
+                newItemData={newItemData}
+                setNewItemData={setNewItemData}
+                selectedInstances={selectedInstances}
+                isDropdownOpen={isDropdownOpen}
+                setIsDropdownOpen={setIsDropdownOpen}
+                setSelectedInstances={setSelectedInstances}
+              />
+            </>
+          )
         }
 
 
