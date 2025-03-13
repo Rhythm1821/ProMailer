@@ -54,20 +54,21 @@ async function sendMsgWithDelay(lead, template, delay) {
         throw new Error("Missing required lead or template data");
     }
 
-    if (delay.time <= 0 || isNaN(delay.time)) {
+    if (delay <= 0 || isNaN(delay)) {
         throw new Error("Invalid delayTime provided");
     }
-    const delayType = delay.type
+    // const delayType = delay.type
+    const delayType = "Minutes"
     let delayTime;
     try {
         if(delayType==='Days'){
-            delayTime = delay.time * 24 * 60 * 60 * 1000;
+            delayTime = delay * 24 * 60 * 60 * 1000;
         }
         else if(delayType==='Hours'){
-            delayTime = delay.time * 60 * 60 * 1000;
+            delayTime = delay * 60 * 60 * 1000;
         }
         else if(delayType==='Minutes'){
-            delayTime = delay.time * 60 * 1000;
+            delayTime = delay * 60 * 1000;
         }
         else{
             throw new Error("Invalid delayType provided");

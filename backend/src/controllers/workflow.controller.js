@@ -3,37 +3,77 @@ import workflowModel from "../models/workflow.model.js";
 
 export async function addWorkflow(request, response) {
     try {
-        const { nodes, edges, lead, templates, delays } = request.body  
-
+        const { nodes, edges, lead, templates } = request.body;
         if (!nodes || !edges) {
-            return response.status(400).json({ msg: 'Nodes and edges are required' })
-        }
-        const existingWorkflow = await workflowModel.findOne({ lead, templates, delays, nodes, edges })
-        if (existingWorkflow) {
-            return response.json({ msg: 'Workflow saved already' })
-        }
-        const newWorkflow = await workflowModel.create({
-            lead,
-            templates,
-            delays,
-            nodes,
-            edges
-        })
-        for (let i = 0; i < templates.length; i++) {
-            const delay = delays[i];
-            const isScheduled = await sendMsgWithDelay(lead, templates[i], delay)
-            if (isScheduled) {
-                await newWorkflow.save()
-                return response.json({ msg: 'workflow added. Template is scheduled!!' })
-            }
+            return response.status(400).json({ msg: 'Nodes and edges are required' });
         }
 
-        return response.json({ msg: 'Something went wrong' })
+        const existingWorkflow = await workflowModel.findOne({ lead, nodes, edges });
+        if (existingWorkflow) {
+            return response.json({ msg: 'Workflow already saved' });
+        }
+
+        const newWorkflow = await workflowModel.create({ lead, nodes, edges });
+
+        // Step 1: Build a node lookup
+        const allNodes = [...nodes, ...templates];
+
+        const nodeMap = allNodes.reduce((acc, node) => {
+            acc[node.id] = node;
+            return acc;
+        }, {});
+
+        // Step 2: Identify the starting point (leadNode)
+        const startNode = nodes.find(node => node.type === 'leadNode');
+        if (!startNode) {
+            return response.status(400).json({ msg: 'No lead node found' });
+        }
+
+
+        // Step 3: Construct the sequence based on edges
+        let currentNode = startNode;
+        let totalDelay = 0;
+
+        while (currentNode) {
+            console.log("Processing Node:", currentNode);
+            
+
+            const nextEdge = edges.find(edge => edge.source === currentNode.id);
+            if (!nextEdge) break;
+
+            const nextNode = nodeMap[nextEdge.target];
+            console.log(nextNode.type);
+            if (!nextNode) break;
+
+            if (nextNode.type === 'delayNode') {
+                const delayMinutes = parseInt(nextNode.data.label, 10) || 0;
+                totalDelay += delayMinutes;
+            } else if (nextNode.type === 'templateNode') {
+                console.log("Sending Message:", { lead, template: nextNode.data.label, totalDelay });
+                const templateData = templates.find(t => t.name === nextNode.data.label);
+                if (!templateData) {
+                    console.error("Template not found:", nextNode.data.label);
+                    return response.status(400).json({ msg: `Template ${nextNode.data.label} not found` });
+                }
+
+                console.log("Sending Message:", { lead, template: templateData, totalDelay });
+                await sendMsgWithDelay(lead, templateData, totalDelay,"Minutes");
+
+            }
+
+            currentNode = nextNode;
+        }
+
+
+        await newWorkflow.save();
+        return response.json({ msg: 'Workflow added and messages scheduled!' });
+
     } catch (error) {
-        throw new Error("Error adding workflow: " + error);
+        console.error("Error adding workflow:", error);
+        return response.status(500).json({ msg: 'Internal Server Error' });
     }
-    
 }
+
 
 export async function getWorkflows(request, response) {
     try {
@@ -42,14 +82,14 @@ export async function getWorkflows(request, response) {
         if (allWorkflows.length === 0) {
             return response.json({ msg: 'No workflows found' })
         }
-        
+
         return response.json({ allWorkflows })
     } catch (error) {
         throw new Error("Error getting workflows: " + error.message);
     }
 }
 
-export async function deleteWorkflow(request,response) {
+export async function deleteWorkflow(request, response) {
     try {
         const { id } = request.params
         if (!id) {
