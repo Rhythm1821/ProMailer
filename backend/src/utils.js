@@ -48,7 +48,7 @@ async function initializeAgenda() {
     }
 }
 
-async function sendMsgWithDelay(lead, template, delay) {
+async function sendMsgWithDelay(lead, template, delay, delayType) {
 
     if (!lead.email || !template.subject || !template.content) {
         throw new Error("Missing required lead or template data");
@@ -57,8 +57,7 @@ async function sendMsgWithDelay(lead, template, delay) {
     if (delay <= 0 || isNaN(delay)) {
         throw new Error("Invalid delayTime provided");
     }
-    // const delayType = delay.type
-    const delayType = "Minutes"
+    
     let delayTime;
     try {
         if(delayType==='Days'){

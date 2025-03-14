@@ -33,31 +33,29 @@ export async function addWorkflow(request, response) {
         // Step 3: Construct the sequence based on edges
         let currentNode = startNode;
         let totalDelay = 0;
+        let delayType = []
 
         while (currentNode) {
-            console.log("Processing Node:", currentNode);
             
 
             const nextEdge = edges.find(edge => edge.source === currentNode.id);
             if (!nextEdge) break;
 
             const nextNode = nodeMap[nextEdge.target];
-            console.log(nextNode.type);
             if (!nextNode) break;
 
             if (nextNode.type === 'delayNode') {
                 const delayMinutes = parseInt(nextNode.data.label, 10) || 0;
                 totalDelay += delayMinutes;
+                delayType.push(nextNode.data.delayType);
             } else if (nextNode.type === 'templateNode') {
-                console.log("Sending Message:", { lead, template: nextNode.data.label, totalDelay });
                 const templateData = templates.find(t => t.name === nextNode.data.label);
                 if (!templateData) {
                     console.error("Template not found:", nextNode.data.label);
                     return response.status(400).json({ msg: `Template ${nextNode.data.label} not found` });
                 }
 
-                console.log("Sending Message:", { lead, template: templateData, totalDelay });
-                await sendMsgWithDelay(lead, templateData, totalDelay,"Minutes");
+                await sendMsgWithDelay(lead, templateData, totalDelay,delayType.pop());
 
             }
 
