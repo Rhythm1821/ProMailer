@@ -1,4 +1,4 @@
-const handleSave = (nodes, edges, currentLead, templates, delays, delayType) => {
+const handleSave = (nodes, edges, currentLead, templates, delays) => {
     if (nodes.length === 0 || edges.length === 0) {
         if (window.confirm('Are you sure you want to delete the workflow?')) {
             fetch(`${import.meta.env.VITE_API_URL}/workflows`, {
@@ -12,13 +12,15 @@ const handleSave = (nodes, edges, currentLead, templates, delays, delayType) => 
         alert('You must select a lead to start the workflow');
         return;
     }
+    const newNodes = nodes.filter((node) => node.type !== 'leadSource' && node.type !== 'addNode');
     const data = {
         lead: currentLead,
         templates,
         delays,
-        nodes,
+        nodes:newNodes,
         edges,
     }
+    
 
     fetch(`${import.meta.env.VITE_API_URL}/workflows`, {
         method: 'POST',
