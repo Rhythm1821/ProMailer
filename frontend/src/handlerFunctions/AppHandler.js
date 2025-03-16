@@ -28,7 +28,7 @@ const handleSave = (nodes, edges, currentLead, templates, delays) => {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
-    }).then(res => res.json()).then(data => console.log(data)).catch(error => console.log(error))
+    }).then(res => res.json()).then(data => alert(data.msg)).catch(error => alert(error))
 }
 
 const handleNodeRemove = (nodeId, setNodes, setEdges) => {
