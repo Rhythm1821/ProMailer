@@ -2,39 +2,19 @@ import { handleNodeEdit, handleNodeRemove } from "../../handlerFunctions/AppHand
 
 export default function EditAndRemoveNodeButton({ id, setNodes, setEdges }) {
     return (
-        <div style={{
-            position: 'absolute',
-            top: '-15px',
-            right: '-15px',
-            display: 'flex',
-            gap: '5px',
-          }}>
+        <div className="absolute -top-3.5 -right-3.5 flex gap-1.5">
             <button
               onClick={() => handleNodeEdit(id)}
-              style={{
-                padding: '4px 8px',
-                backgroundColor: '#007bff',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-              }}
+              className="px-2 py-1 bg-blue-500 text-white border-none rounded cursor-pointer"
             >
               ✏️
             </button>
             <button
               onClick={() => handleNodeRemove(id, setNodes, setEdges)}
-              style={{
-                padding: '4px 8px',
-                backgroundColor: '#dc3545',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-              }}
+              className="px-2 py-1 bg-red-600 text-white border-none rounded cursor-pointer"
             >
               X
             </button>
-          </div>
-    )
+        </div>
+    );
 }

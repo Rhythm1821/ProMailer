@@ -32,27 +32,25 @@ export default function App() {
 
   const onConnect = (params) => {
     setEdges((eds) => addEdge(params, eds));
-  }
+  };
 
   useFetchWorkflows(setNodes, setEdges);
-
 
   const onNodeClick = (e, node) => {
     if (node.type === 'leadSource') {
       const leadNodePresent = nodes && Array.isArray(nodes) && nodes.some((n) => n.type === 'leadNode');
       if (leadNodePresent) {
-        return
+        return;
       }
       setModalInfo({ isOpen: true, nodeId: node.id, nodeType: 'leadSource' });
     } else if (node.type === 'addNode') {
       setModalInfo({ isOpen: true, nodeId: node.id, nodeType: 'addNode' });
     }
-  }
+  };
 
   const addNewNode = (selectedData, nodeType, delayType) => {
     if (!nodes || !Array.isArray(nodes)) return;
     const newNodeId = crypto.randomUUID();
-    // Create the new node
     const newNode = {
       id: newNodeId,
       position: { x: 540, y: nodes.length * 100 },
@@ -66,46 +64,37 @@ export default function App() {
       type: nodeType === 'leadSource' ? 'leadNode' : nodeType === 'delay' ? 'delayNode' : 'templateNode',
     };
 
-    // Find the addNode node
     const currentAddNode = nodes.find((node) => node.id === 'addNode');
 
-
-    if (!currentAddNode) return
-    // Update the position of the addNode node
+    if (!currentAddNode) return;
     const updatedAddNode = {
       ...currentAddNode,
       position: { x: newNode.position.x, y: newNode.position.y + 200 },
     };
 
-    // Create the edge to connect the new node to the addNode node
     const newEdgeToAddNode = {
       id: `edge-${edges.length + 1}`,
       source: newNodeId,
       target: 'addNode',
     };
 
-    // Update the current lead or template based on the nodeType
-
     if (nodeType === 'leadSource') {
-      setCurrentLead(selectedData[0])
+      setCurrentLead(selectedData[0]);
     } else if (nodeType === 'addNode') {
-      setTemplates(prev => [...prev,selectedData[0]])
+      setTemplates((prev) => [...prev, selectedData[0]]);
     } else if (nodeType === 'delay') {
-      console.log("selectedData", selectedData);
-      
-      setDelays(prev => [...prev,{time: selectedData, type: delayType}])
-      
+      setDelays((prev) => [...prev, { time: selectedData, type: delayType }]);
     }
 
     setNodes((prevNodes) => {
-      if (!prevNodes) return []
+      if (!prevNodes) return [];
       const filteredNodes = prevNodes.filter((node) => node.id !== 'addNode');
       return [...filteredNodes, newNode, updatedAddNode];
     });
 
     setEdges((prevEdges) => {
-      if (!prevEdges) return []
-      if (nodeType !== "leadSource") {
+      if (!prevEdges) return [];
+      if (nodeType !== 'leadSource') {
         const updatedEdges = [...prevEdges];
         if (updatedEdges.length > 0) {
           updatedEdges[updatedEdges.length - 1] = {
@@ -121,11 +110,9 @@ export default function App() {
 
     setModalInfo({ isOpen: false, nodeId: null, nodeType: null });
   };
-  console.log(nodes, edges);
-  
 
   return (
-    <div style={{ width: '100vw', height: '100vh' }}>
+    <div className="w-screen h-screen">
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -133,18 +120,26 @@ export default function App() {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         onNodeClick={onNodeClick}
-        nodeTypes={{ addNode: AddNode, leadSource: LeadSource, sequenceStartNode: SequenceStartNode, leadNode: LeadNode, templateNode: TemplateNode, delayNode: DelayNode }}
+        nodeTypes={{
+          addNode: AddNode,
+          leadSource: LeadSource,
+          sequenceStartNode: SequenceStartNode,
+          leadNode: LeadNode,
+          templateNode: TemplateNode,
+          delayNode: DelayNode,
+        }}
       >
         <Controls />
         <MiniMap />
         <Background variant="dots" gap={12} size={1} />
       </ReactFlow>
 
-      <button 
-        style={{ position: 'absolute', top: '10px', right: '10px', color: '#fff' }} 
-        onClick={() => handleSave(nodes, edges, currentLead, templates, delays)} 
-        type="submit">
-          Save
+      <button
+        className="absolute top-2.5 right-2.5 text-white bg-blue-500 px-4 py-2 rounded cursor-pointer"
+        onClick={() => handleSave(nodes, edges, currentLead, templates, delays)}
+        type="submit"
+      >
+        Save
       </button>
 
       {/* Render the modal */}
@@ -155,7 +150,6 @@ export default function App() {
         nodeType={modalInfo.nodeType}
         addNewNode={addNewNode}
       />
-
     </div>
   );
 }
